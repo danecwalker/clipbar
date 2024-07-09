@@ -3,7 +3,8 @@
 
   let { height, padding, data, xScale, yScale } = getChartContext();
   export let withLines = false;
-
+  export let offset = 0;
+  export let formatter: undefined | ((label: any) => string) = undefined;
 </script>
 
 {#each $xScale.ticks($data.length) as tick}
@@ -19,12 +20,14 @@
 
   <text
     x={$xScale(tick) + $xScale.bandwidth() / 2}
-    y={$height - padding.bottom}
+    y={$height - padding.top - padding.bottom + offset}
     text-anchor="middle"
-    dominant-baseline="middle"
+    dominant-baseline="hanging"
     class="text-xs"
     fill="hsl(0, 0%, 50%)"
   >
+    {#if formatter}{formatter(tick)}{:else}
     {tick}
+    {/if}
   </text>
 {/each}

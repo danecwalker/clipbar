@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getChartContext } from "./ChartContainer.svelte";
 
-  let { height, padding, data, xScale, yScale, keys } = getChartContext();
+  let { height, padding, data, xScale, yScale, keys, labelKey } = getChartContext();
 
   export let dataKeys: string[];
   export let colors: { [key: string]: string } = {};
@@ -18,7 +18,7 @@
   {#each $data as d}
     {#each dataKeys as dataKey, i}
       <rect
-      x={$xScale(d.label) + i * (($xScale.bandwidth() - (gapWidth * (dataKeys.length - 1))) / dataKeys.length + gapWidth)}
+      x={$xScale(d[labelKey]) + i * (($xScale.bandwidth() - (gapWidth * (dataKeys.length - 1))) / dataKeys.length + gapWidth)}
       y={$yScale(d[dataKey])}
       width={($xScale.bandwidth() - (gapWidth * (dataKeys.length - 1))) / dataKeys.length}
       height={Math.max(0, $height - padding.bottom - padding.top - $yScale(d[dataKey]))}

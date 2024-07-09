@@ -45,16 +45,16 @@ import ChartContainer from "$lib/ChartContainer.svelte";
 				<ChartContainer data={chartData} labelKey="month" class="min-h-[200px] w-full" padding={{
 					top: 10,
 					right: 0,
-					bottom: 20,
+					bottom: 32,
 					left: 0,
 				}}>
 					<BarChart>
-						<!-- <XLines /> -->
-						<!-- <GroupBars dataKeys={["desktop", "mobile"]} colors={{
-							desktop: "hsl(340 75% 55%)",
-							mobile: "hsl(220 50% 50%)",
-						}} gap={0.1} /> -->
-						<Bar dataKey="desktop" color={"hsl(220 70% 50%)"} />
+						<XLines offset={12} formatter={(l) => l.slice(0,3)} />
+						<GroupBars dataKeys={["desktop", "mobile"]} colors={{
+							desktop: "hsl(220 50% 50%)",
+							mobile: "hsl(340 75% 55%)",
+						}} gap={0.1} />
+						<!-- <Bar dataKey="desktop" color={"hsl(220 70% 50%)"} /> -->
 					</BarChart>
 				</ChartContainer>
 			</div>

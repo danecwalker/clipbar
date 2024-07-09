@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getChartContext } from "./ChartContainer.svelte";
 
-  let { height, padding, data, xScale, yScale, keys } = getChartContext();
+  let { height, padding, data, xScale, yScale, keys, labelKey } = getChartContext();
 
   export let dataKey: string;
   export let color: string = "steelblue";
@@ -15,7 +15,7 @@
 {#if dataKey}
   {#each $data as d, i}
     <rect
-      x={$xScale(d.label)}
+      x={$xScale(d[labelKey])}
       y={$yScale(d[dataKey])}
       width={Math.max(0, $xScale.bandwidth())}
       height={Math.max(0, $height - padding.bottom - padding.top - $yScale(d[dataKey]))}

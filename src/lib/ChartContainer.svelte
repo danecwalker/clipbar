@@ -9,6 +9,7 @@
     xScale: Readable<ScaleBandFn>;
     yScale: Readable<ScaleLinearFn>;
 
+    labelKey: string;
     keys: Writable<Set<string>>;
     width: Writable<number>;
     height: Writable<number>;
@@ -50,7 +51,7 @@
 
   const data = writable<any[]>(_initialData);
   const xScale = derived([data, width], ([$data, $width]) => {
-    return scaleBand($data.map(d => d[labelKey]), [0, $width - padding.right - padding.left]).innerPadding(0.1);
+    return scaleBand($data.map(d => d[labelKey]), [0, $width - padding.right - padding.left]).innerPadding(0.2);
   });
   const yScale = derived([data, height, _keys], ([$data, $height, $keys]) => {
     return scaleLinear([0, d3.max($data, d => Math.max(...([...$keys].map(k => d[k]))))!], [$height - padding.bottom - padding.top, 0]);
@@ -62,6 +63,7 @@
     data,
     xScale,
     yScale,
+    labelKey,
     keys: _keys,
 
     width,
