@@ -21,15 +21,7 @@
 </script>
 
 {#if dataKey}
-  {#each $data as d, i}
-    <rect
-      x={$xScale(d[labelKey])}
-      y={$yScale(d[dataKey]) + ($height - padding.bottom - padding.top - $yScale(d[dataKey])) * $progress}
-      width={Math.max(0, $xScale.bandwidth())}
-      height={Math.max(0, ($height - padding.bottom - padding.top - $yScale(d[dataKey])) - (($height - padding.bottom - padding.top - $yScale(d[dataKey])) * $progress))}
-      fill={color}
-      rx={4}
-      ry={4}
+  <path
+    stroke={color}
     />
-  {/each}
 {/if}

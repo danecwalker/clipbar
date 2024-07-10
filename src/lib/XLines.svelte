@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getChartContext } from "./ChartContainer.svelte";
 
-  let { height, padding, data, xScale, yScale } = getChartContext();
+  let { height, padding, data, xScale, yScale, chartType } = getChartContext();
   export let withLines = false;
   export let offset = 0;
   export let formatter: undefined | ((label: any) => string) = undefined;
@@ -17,9 +17,8 @@
       stroke="hsl(0, 0%, 50%)"
     />
   {/if}
-
   <text
-    x={$xScale(tick) + $xScale.bandwidth() / 2}
+    x={$chartType !== "line" ? $xScale(tick) + $xScale.bandwidth() / 2 : $xScale(tick) + offset}
     y={$height - padding.top - padding.bottom + offset}
     text-anchor="middle"
     dominant-baseline="hanging"

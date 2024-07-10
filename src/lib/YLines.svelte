@@ -3,22 +3,22 @@
 
   let { width, padding, data, xScale, yScale } = getChartContext();
 
-
+  let withTicks = false;
+  let offset = 0;
 </script>
 
 {#each $yScale.ticks(5) as tick}
-  {console.log("t", tick)}
-  {console.log("yt", $yScale(tick))}
   <line
     x1={0}
     x2={$width - padding.right - padding.left}
     y1={$yScale(tick)}
     y2={$yScale(tick)}
-    stroke="hsl(0, 0%, 50%)"
+    stroke="hsl(0, 0%, 10%)"
   />
 
+  {#if withTicks}
   <text
-    x={-10}
+    x={-offset}
     y={$yScale(tick)}
     text-anchor="end"
     dominant-baseline="middle"
@@ -27,4 +27,5 @@
   >
     {tick}
   </text>
+  {/if}
 {/each}

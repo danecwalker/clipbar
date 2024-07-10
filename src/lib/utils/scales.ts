@@ -1,17 +1,12 @@
-export interface ScaleBandFn {
-  (d: string): number;
+export interface ScaleFn {
+  (d: any): number;
   bandwidth: () => number;
-  padding: (p: number) => ScaleBandFn;
-  innerPadding: (p: number) => ScaleBandFn;
-  ticks: (n?: number) => string[];
+  padding: (p: number) => ScaleFn;
+  innerPadding: (p: number) => ScaleFn;
+  ticks: (n?: number) => any[];
 };
 
-export interface ScaleLinearFn {
-  (d: number): number;
-  ticks: (n?: number) => number[];
-};
-
-export const scaleBand = (domain: string[], range: [number, number]): ScaleBandFn => {
+export const scaleBand = (domain: string[], range: [number, number]): ScaleFn => {
   const step = (range[1] - range[0]) / domain.length;
 
   const scale = (d: string) => {
@@ -55,7 +50,7 @@ export const scaleBand = (domain: string[], range: [number, number]): ScaleBandF
   return scale;
 }
 
-export const scaleLinear = (domain: [number, number], range: [number, number]): ScaleLinearFn => {
+export const scaleLinear = (domain: [number, number], range: [number, number]): ScaleFn => {
   const [domainMin, domainMax] = domain;
   const [rangeMin, rangeMax] = range;
   const scale = (d: number) => {
@@ -70,6 +65,10 @@ export const scaleLinear = (domain: [number, number], range: [number, number]): 
     }
     return ticks;
   }
+
+  scale.bandwidth = () => { throw new Error('scaleLinear does not have a bandwidth method') };
+  scale.padding = () => { throw new Error('scaleLinear does not have a padding method') };
+  scale.innerPadding = () => { throw new Error('scaleLinear does not have an innerPadding method') };
 
   return scale;
 }
