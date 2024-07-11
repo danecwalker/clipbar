@@ -211,14 +211,14 @@
 				<CardFooter slot="footer" />
 			</Card>
 
-			<Card class="col-span-2">
+			<Card class="col-span-3">
 				<CardTool slot="tool" chartType="Candlestick" />
 				<CardHeader slot="header" title="Candlestick Chart" />
 				<CardContent slot="content">
 					<ChartContainer
 						data={marketData}
 						labelKey={0}
-						class="min-h-[200px] w-full"
+						class="min-h-[400px] w-full"
 						padding={{
 							top: 10,
 							right: 20,
@@ -239,7 +239,7 @@
 								}}
 							/>
 
-							<YLines withTicks={true} offset={10} formatter={(l) => l.toFixed(2)} />
+							<YLines withTicks={true} offset={10} ticks={10} formatter={(l) => l.toFixed(2)} />
 
 							<Candle
 								dataKeys={{
@@ -254,31 +254,6 @@
 							<CursorLines opacity={in_chart ? 1 : 0} />
 							<DetailPane opacity={in_chart ? 1 : 0} currentData={current} textPadding={2}/>
 						</CandleStickChart>
-					</ChartContainer>
-				</CardContent>
-				<CardFooter slot="footer" />
-			</Card>
-
-			<Card>
-				<CardTool slot="tool" chartType="Line" />
-				<CardHeader slot="header" title="Bar Chart - Stacked" />
-				<CardContent slot="content">
-					<ChartContainer
-						data={chartData}
-						labelKey="month"
-						class="min-h-[200px] w-full"
-						padding={{
-							top: 10,
-							right: 0,
-							bottom: 32,
-							left: 0
-						}}
-					>
-						<LineChart>
-							<YLines />
-							<!-- <Bar dataKey="desktop" color={"hsl(220 70% 50%)"} /> -->
-							<Line dataKey="desktop" color={'hsl(220 70% 50%)'} />
-						</LineChart>
 					</ChartContainer>
 				</CardContent>
 				<CardFooter slot="footer" />
