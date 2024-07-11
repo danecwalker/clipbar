@@ -4,13 +4,15 @@
 
   const key = {};
 
+  export type ChartTypes = "stacked" | "line" | "bar" | "candle";
+
   export type ChartContext = {
     data: Writable<any[]>;
     xScale: Readable<ScaleFn>;
     yScale: Readable<ScaleFn>;
-    chartType: Writable<"stacked" | "line" | "bar">;
-    labelKey: string;
-    keys: Writable<Set<string>>;
+    chartType: Writable<ChartTypes>;
+    labelKey: string | number;
+    keys: Writable<Set<string | number>>;
     width: Writable<number>;
     height: Writable<number>;
     padding: {
@@ -28,14 +30,14 @@
 
 <script lang="ts">
   import * as d3 from "d3";
-	import { scaleBand, scaleLinear, type ScaleFn } from "./utils/scales";
+	import { extent, pad, scaleBand, scaleLinear, type ScaleFn } from "./utils/scales";
 
   let _class: string = "";
   export { _class as class }; 
 
   export let width = writable<number>(0);
   export let height = writable<number>(0);
-  export let labelKey: string;
+  export let labelKey: string | number;
 
   export let padding = {
     top: 20,
@@ -46,9 +48,10 @@
 
   let _initialData: any[];
   export { _initialData as data };
+  export let yPad: number = 0.1;
 
-  let _keys = writable<Set<string>>(new Set());
-  let chartType = writable<"stacked" | "line" | "bar">("bar");
+  let _keys = writable<Set<string | number>>(new Set());
+  let chartType = writable<ChartTypes>("bar");
 
   const data = writable<any[]>(_initialData);
   const xScale = derived([data, width, chartType], ([$data, $width, $chartType]) => {
@@ -58,8 +61,10 @@
     return scaleBand($data.map(d => d[labelKey]), [0, $width - padding.right - padding.left]).innerPadding(0.2);
   });
   const yScale = derived([data, height, _keys, chartType], ([$data, $height, $keys, $chartType]) => {
-    if ($chartType === "stacked") {
-      return scaleLinear([0, d3.max($data, d => d3.sum([...$keys].map(k => d[k])) as number)!], [$height - padding.bottom - padding.top, 0]);
+    if ($chartType === "candle") {
+      return scaleLinear(pad(extent($data as number[][], d => ([...$keys] as number[]).flatMap(k => d[k])), yPad), [$height - padding.bottom - padding.top, 0]);
+    } else if ($chartType === "stacked") {
+      return scaleLinear(pad([0, d3.max($data, d => d3.sum([...$keys].map(k => d[k])) as number)!], yPad), [$height - padding.bottom - padding.top, 0]);
     }
     return scaleLinear([0, d3.max($data, d => Math.max(...([...$keys].map(k => d[k]))))!], [$height - padding.bottom - padding.top, 0]);
   });

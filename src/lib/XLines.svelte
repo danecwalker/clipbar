@@ -4,10 +4,13 @@
   let { height, padding, data, xScale, yScale, chartType } = getChartContext();
   export let withLines = false;
   export let offset = 0;
+  export let ticks = 10;
+  export let step: number | ((d: any) => boolean) | undefined = undefined;
+  export let start = "middle";
   export let formatter: undefined | ((label: any) => string) = undefined;
 </script>
 
-{#each $xScale.ticks($data.length) as tick}
+{#each $xScale.ticks(ticks, step) as tick}
   {#if withLines}
     <line
       x1={$xScale(tick)}
@@ -20,7 +23,7 @@
   <text
     x={$chartType !== "line" ? $xScale(tick) + $xScale.bandwidth() / 2 : $xScale(tick) + offset}
     y={$height - padding.top - padding.bottom + offset}
-    text-anchor="middle"
+    text-anchor={start}
     dominant-baseline="hanging"
     class="text-xs"
     fill="hsl(0, 0%, 50%)"

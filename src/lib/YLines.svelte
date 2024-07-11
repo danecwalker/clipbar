@@ -3,11 +3,14 @@
 
   let { width, padding, data, xScale, yScale } = getChartContext();
 
-  let withTicks = false;
-  let offset = 0;
+  export let withTicks = false;
+  export let offset = 0;
+  export let ticks = 5;
+  export let step: number | ((d: any) => boolean) | undefined = undefined;
+  export let formatter: undefined | ((label: any) => string) = undefined;
 </script>
 
-{#each $yScale.ticks(5) as tick}
+{#each $yScale.ticks(ticks, step) as tick}
   <line
     x1={0}
     x2={$width - padding.right - padding.left}
@@ -22,10 +25,12 @@
     y={$yScale(tick)}
     text-anchor="end"
     dominant-baseline="middle"
-    class="text-xs"
+    font-size="0.6rem"
     fill="hsl(0, 0%, 50%)"
   >
+    {#if formatter}{formatter(tick)}{:else}
     {tick}
+    {/if}
   </text>
   {/if}
 {/each}
